@@ -3,6 +3,7 @@ services:
     image: apache/kafka:latest
     hostname: broker
     container_name: broker
+    restart: unless-stopped
     ports:
       - 9092:9092
     environment:
@@ -20,5 +21,5 @@ services:
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
       KAFKA_LOG_DIRS: /tmp/kraft-combined-logs
-      KAFKA_CREATE_TOPICS: "step0-ingestion:1:1"
+      KAFKA_CREATE_TOPICS: "step0-ingestion:1:1,step01.a-wfh"
       CLUSTER_ID: MkU3OEVBNTcwNTJENDM2Q
