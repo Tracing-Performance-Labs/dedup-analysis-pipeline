@@ -35,6 +35,7 @@ public class Configuration {
 
         props.setProperty("application.id", "dedupe-pipeline");
         props.setProperty("bootstrap.servers", "localhost:9092");
+        props.setProperty("auto.offset.reset", "earliest");
     }
 
 

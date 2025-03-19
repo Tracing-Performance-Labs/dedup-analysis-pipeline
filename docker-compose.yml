@@ -1,4 +1,22 @@
 services:
+  step_0_ingestion:
+    build:
+      context: ./step0-ingestor
+    depends_on:
+      - broker
+    environment:
+      - INGESTION_DATA_DIR=/app/data
+      - INGESTION_TOPIC=step0-ingestion
+
+  step_01_a_wfh:
+    build:
+      context: ./step1.a-wfh
+    depends_on:
+      - broker
+    environment:
+      - STEP_01_A_WFH_TOPIC_INPUT_NAME=step0-ingestion
+      - STEP_01_A_WFH_TOPIC_OUTPUT_NAME=step01.a-wfh
+
   broker:
     image: apache/kafka:latest
     hostname: broker
