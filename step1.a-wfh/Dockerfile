@@ -11,7 +11,8 @@ WORKDIR /app
 
 COPY --from=build /app/app/build/libs/app-all.jar app.jar
 
+ENV KAFKA_ADDRESS=broker:29092
 ENV STEP_01_A_WFH_TOPIC_INPUT_NAME=step0-ingestion
-ENV STEP_01_A_WFH_TOPIC_OUTPUT_NAME=step01.a-wfh
+ENV STEP_01_A_WFH_TOPIC_OUTPUT_NAME=step01-a-wfh
 
 ENTRYPOINT ["java", "-jar", "app.jar"]
