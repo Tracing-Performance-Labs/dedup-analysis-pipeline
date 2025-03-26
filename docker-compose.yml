@@ -1,4 +1,12 @@
 services:
+  topic_creator:
+    build:
+      context: ./topic-creator
+    depends_on:
+      - broker
+    environment:
+      - KAFKA_ADDRESS=broker:29092
+
   step_0_ingestion:
     build:
       context: ./step0-ingestor
@@ -6,6 +14,7 @@ services:
       - 8080:8000
     depends_on:
       - broker
+      - topic_creator
     environment:
       - KAFKA_ADDRESS=broker:29092
       - INGESTION_DATA_DIR=/app/data
@@ -16,6 +25,7 @@ services:
       context: ./step1.a-wfh
     depends_on:
       - broker
+      - topic_creator
     environment:
       - KAFKA_ADDRESS=broker:29092
       - STEP_01_A_WFH_TOPIC_INPUT_NAME=step0-ingestion
