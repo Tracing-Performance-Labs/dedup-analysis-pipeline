@@ -1,20 +1,15 @@
-## Create topics
+## Run with Docker
 
-```bash
-./kafka-topics.sh --create \
-    --bootstrap-server localhost:9092 \
-    --replication-factor 1 \
-    --partitions 1 \
-    --topic <topic-name>
+```
+docker compose up -d
 ```
 
-And do that for each topic:
+This will spin up the following:
 
-- step0-ingestion
-- step01-a-wfh
+- Kafka
+- Kafka UI
+- Ingestion service: Reads data from a file and sends it to Kafka
+- WFH Service: Hashes whole spans and sends them to a different topic
 
-## Consume from a topic
-
-```bash
-./kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic <topic-name> --from-beginning
-```
+## License
+MIT
