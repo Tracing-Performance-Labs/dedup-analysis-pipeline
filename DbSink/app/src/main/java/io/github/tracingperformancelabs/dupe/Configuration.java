@@ -10,6 +10,7 @@ public class Configuration {
     }
 
     private Properties properties;
+    private String wholeFileHashingTopic;
 
     private Configuration() {
         this.properties = new Properties();
@@ -20,5 +21,9 @@ public class Configuration {
             INSTANCE = new Configuration();
         }
         return INSTANCE;
+    }
+
+    public String getWholeFileHashingTopic() {
+        return wholeFileHashingTopic;
     }
 }

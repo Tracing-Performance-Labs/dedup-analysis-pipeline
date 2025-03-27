@@ -1,5 +1,6 @@
 package io.github.tracingperformancelabs.dupe;
 
+import io.github.tracingperformancelabs.dupe.sink.Sink;
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.StreamsBuilder;
 
@@ -31,10 +32,11 @@ public class App {
         final var builder = new StreamsBuilder();
         final var configuration = Configuration.the();
 
-        // TODO: Configure stream processor
+        Sink.from(builder).drain(configuration.getWholeFileHashingTopic());
 
         final var topology = builder.build();
         final var app = new KafkaStreams(topology, configuration.getProperties());
+
         return app;
     }
 }
