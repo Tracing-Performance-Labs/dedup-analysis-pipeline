@@ -1,7 +1,7 @@
 services:
   topic_creator:
     build:
-      context: ./topic-creator
+      context: ./TopicCreator
     depends_on:
       - broker
     environment:
@@ -9,7 +9,7 @@ services:
 
   step_0_ingestion:
     build:
-      context: ./step0-ingestor
+      context: ./Ingestor
     ports:
       - 8080:8000
     depends_on:
@@ -22,7 +22,7 @@ services:
 
   step_01_a_wfh:
     build:
-      context: ./step1.a-wfh
+      context: ./Wfh
     depends_on:
       - broker
       - topic_creator
