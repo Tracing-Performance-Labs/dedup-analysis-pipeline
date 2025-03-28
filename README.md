@@ -27,6 +27,9 @@ Then you can run the services with the following command:
 docker compose up -d
 ```
 
+> [!NOTE]
+> You might have to start the kafka container first, and then the other services
+
 In order to trigger the data ingestion, you have to hit `http://localhost:8080`:
 
 ```bash

@@ -31,6 +31,16 @@ services:
       - STEP_01_A_WFH_TOPIC_INPUT_NAME=step0-ingestion
       - STEP_01_A_WFH_TOPIC_OUTPUT_NAME=step01-a-wfh
 
+  fastcdc_processor:
+    build:
+      context: ./FastCDC
+    depends_on:
+      - broker
+      - topic_creator
+    environment:
+      - KAFKA_ADDR=broker:29092
+      - INGESTION_TOPIC=step0-ingestion
+
   database_sink:
     build:
       context: ./DbSink
