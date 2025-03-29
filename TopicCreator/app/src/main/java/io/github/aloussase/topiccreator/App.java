@@ -17,7 +17,8 @@ public class App {
 
         final var topicNames = List.of(
                 "step0-ingestion",
-                "step01-a-wfh"
+                "step01-a-wfh",
+                "fastcdc-processor"
         );
 
         final var topics = topicNames
