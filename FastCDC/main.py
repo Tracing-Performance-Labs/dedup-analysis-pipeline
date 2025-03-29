@@ -1,7 +1,17 @@
-from os import getenv
 from fastcdc.fastcdc_py import fastcdc_py
 from kafka import KafkaConsumer
 import sys, os, time
+import hashlib
+
+
+def hash(contents: bytes | str) -> str:
+    """Hash contents using MD5."""
+    md5 = hashlib.md5()
+    if isinstance(contents, bytes):
+        md5.update(contents)
+    else:
+        md5.update(contents.encode('utf-8'))
+    return md5.hexdigest()
 
 
 def _main(broker_addr: str, topic: str):
@@ -26,9 +36,9 @@ def _main(broker_addr: str, topic: str):
             spans.clear()
 
             for chunk in chunks:
-                # TODO: Hash each chunk with MD5
                 # TODO: Send each chunk hash to an output topic
-                print(chunk.offset)
+                hsh = hash(chunk.data)
+                print(hsh)
 
 
 if __name__ == '__main__':
