@@ -1,7 +1,14 @@
 from fastcdc.fastcdc_py import fastcdc_py
-from kafka import KafkaConsumer
+from kafka import KafkaConsumer, KafkaProducer
 import sys, os, time
 import hashlib
+from dataclasses import dataclass
+
+@dataclass
+class Config:
+    input_topic: str
+    output_topic: str
+    broker_addr: str
 
 
 def hash(contents: bytes | str) -> str:
@@ -14,12 +21,17 @@ def hash(contents: bytes | str) -> str:
     return md5.hexdigest()
 
 
-def _main(broker_addr: str, topic: str):
-    consumer = KafkaConsumer(topic,
-        bootstrap_servers=broker_addr,
+def _main(config: Config):
+    consumer = KafkaConsumer(config.input_topic,
+        bootstrap_servers=config.broker_addr,
         group_id='dedupe-pipeline-fastcdc-' + str(time.time()),
         key_deserializer=lambda k: None,
         value_deserializer=lambda v: v.decode('utf-8') if v else None)
+
+    producer = KafkaProducer(
+        bootstrap_servers=config.broker_addr,
+        key_serializer=lambda k: None,
+        value_serializer=lambda v: v.encode('utf-8') if v else None)
 
     spans = set()
 
@@ -36,15 +48,19 @@ def _main(broker_addr: str, topic: str):
             spans.clear()
 
             for chunk in chunks:
-                # TODO: Send each chunk hash to an output topic
                 hsh = hash(chunk.data)
-                print(hsh)
+                producer.send(config.output_topic, value=hsh)
 
 
 if __name__ == '__main__':
-    topic = os.getenv('INGESTION_TOPIC')
-    if topic is None:
+    input_topic = os.getenv('INGESTION_TOPIC')
+    if input_topic is None:
         print('Missisng input topic')
+        sys.exit(1)
+
+    output_topic = os.getenv('FASTCDC_OUTPUT_TOPIC')
+    if output_topic is None:
+        print('Missing output topic')
         sys.exit(1)
 
     broker_addr = os.getenv('KAFKA_ADDR')
@@ -52,4 +68,6 @@ if __name__ == '__main__':
         print('Missing broker address')
         sys.exit(1)
 
-    _main(broker_addr, topic)
+    config = Config(input_topic, output_topic, broker_addr)
+
+    _main(config)

@@ -40,6 +40,7 @@ services:
     environment:
       - KAFKA_ADDR=broker:29092
       - INGESTION_TOPIC=step0-ingestion
+      - FASTCDC_OUTPUT_TOPIC=fastcdc-processor
 
   database_sink:
     build:
