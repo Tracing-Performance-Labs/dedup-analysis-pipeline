@@ -21,12 +21,13 @@ public class Sink {
 
         // TODO: Think of a better name for this.
 
-        public void drain(String topic) {
+        public OutputSink drain(String topic) {
             final var stream = builder.stream(topic, Consumed.with(Serdes.Void(), Serdes.String()));
             stream.foreach((_key, value) -> {
                 final var id = UUID.randomUUID().toString();
                 dataStore.store(new DataPoint<>(id, value, topic));
             });
+            return this;
         }
     }
 

@@ -32,7 +32,10 @@ public class App {
         final var builder = new StreamsBuilder();
         final var configuration = Configuration.the();
 
-        Sink.from(builder).drain(configuration.getWholeFileHashingTopic());
+        Sink
+                .from(builder)
+                .drain(configuration.getWholeFileHashingTopic())
+                .drain(configuration.getFastcdcTopic());
 
         final var topology = builder.build();
         final var app = new KafkaStreams(topology, configuration.getProperties());

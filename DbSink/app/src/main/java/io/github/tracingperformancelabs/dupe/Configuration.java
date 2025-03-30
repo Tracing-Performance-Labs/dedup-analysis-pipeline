@@ -14,6 +14,7 @@ public class Configuration {
 
     private final Properties properties;
     private final String wholeFileHashingTopic = "step01-a-wfh";
+    private final String fastcdcTopic = "fastcdc-processor";
 
     private Configuration() {
         this.properties = new Properties();
@@ -32,5 +33,9 @@ public class Configuration {
 
     public String getWholeFileHashingTopic() {
         return wholeFileHashingTopic;
+    }
+
+    public String getFastcdcTopic() {
+        return fastcdcTopic;
     }
 }
