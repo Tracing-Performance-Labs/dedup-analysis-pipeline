@@ -41,11 +41,13 @@ public class App {
         final var stream = builder.stream(config.getInputTopic());
 
         stream
+                .peek((_key, value) -> System.out.println("Incoming message: " + value))
                 .flatMapValues(span -> {
                     final var xs = new ArrayList<String>();
                     processor.visit(span, xs::add);
                     return xs;
                 })
+                .peek((_key, value) -> System.out.println("Sending to output: " + value))
                 .to(config.getOutputTopic());
 
         final var topology = builder.build();
