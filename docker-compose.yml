@@ -42,6 +42,17 @@ services:
       - INGESTION_TOPIC=step0-ingestion
       - FASTCDC_OUTPUT_TOPIC=fastcdc-processor
 
+  ast_processor:
+    build:
+      context: ./AstProcessor
+    depends_on:
+      - broker
+      - topic_creator
+    environment:
+      - KAFKA_ADDR=broker:29092
+      - INGESTION_TOPIC=step0-ingestion
+      - AST_OUTPUT_TOPIC=ast-processor
+
   database_sink:
     build:
       context: ./DbSink
