@@ -35,7 +35,8 @@ public class App {
         Sink
                 .from(builder)
                 .drain(configuration.getWholeFileHashingTopic())
-                .drain(configuration.getFastcdcTopic());
+                .drain(configuration.getFastcdcTopic())
+                .drain(configuration.getAstTopic());
 
         final var topology = builder.build();
         final var app = new KafkaStreams(topology, configuration.getProperties());
