@@ -36,9 +36,9 @@ public class App {
     private static KafkaStreams createPipeline(
             StreamsBuilder builder,
             Config config,
-            AstProcessorService<Object, String> processor
+            AstProcessorService<String, String> processor
     ) {
-        final var stream = builder.stream(config.getInputTopic());
+        final var stream = builder.<Void, String>stream(config.getInputTopic());
 
         stream
                 .peek((_key, value) -> System.out.println("Incoming message: " + value))

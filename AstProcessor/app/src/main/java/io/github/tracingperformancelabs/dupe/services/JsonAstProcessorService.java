@@ -1,12 +1,10 @@
 package io.github.tracingperformancelabs.dupe.services;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
+import com.google.gson.*;
 
 import java.util.function.Consumer;
 
-public class JsonAstProcessorService implements AstProcessorService<Object, String> {
+public class JsonAstProcessorService implements AstProcessorService<String, String> {
     private final Gson gson;
 
     public JsonAstProcessorService() {
@@ -14,9 +12,12 @@ public class JsonAstProcessorService implements AstProcessorService<Object, Stri
     }
 
     @Override
-    public void visit(Object root, Consumer<String> consumer) {
-        JsonElement rootElement = gson.toJsonTree(root);
-        visit(rootElement, consumer);
+    public void visit(String root, Consumer<String> consumer) {
+        try {
+            JsonElement rootElement = JsonParser.parseString(root).getAsJsonObject();
+            visit(rootElement, consumer);
+        } catch (JsonSyntaxException ignored) {
+        }
     }
 
     private void visit(JsonElement element, Consumer<String> consumer) {
