@@ -27,14 +27,14 @@ public class JsonAstProcessorService implements AstProcessorService<String, Stri
         } else if (element.isJsonObject()) {
             final var obj = element.getAsJsonObject();
             obj.entrySet().forEach(entry -> {
-                consumer.accept(entry.getKey());
+                consumer.accept("k|" + entry.getKey());
                 visit(entry.getValue(), consumer);
             });
         } else if (element.isJsonPrimitive()) {
             final var prim = element.getAsJsonPrimitive();
             if (prim.isString()) {
                 final var str = prim.getAsString();
-                consumer.accept(str);
+                consumer.accept("v|" + str);
             }
         }
     }
